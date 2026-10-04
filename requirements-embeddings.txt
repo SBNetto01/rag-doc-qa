@@ -1,0 +1,3 @@
+# Optional: higher-quality LOCAL embeddings (sentence-transformers + torch).
+# Still no API key needed — a transformer model runs on your machine.
+sentence-transformers>=3.0

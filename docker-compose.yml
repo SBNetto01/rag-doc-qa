@@ -1,0 +1,27 @@
+services:
+  rag-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      RAG_INDEX_DIR: /data/index
+      RAG_EMBEDDER: ${RAG_EMBEDDER:-offline}
+      # Optional local LLM generation (still NO API key required):
+      RAG_OLLAMA_BASE_URL: ${RAG_OLLAMA_BASE_URL:-http://ollama:11434}
+      RAG_OLLAMA_MODEL: ${RAG_OLLAMA_MODEL:-llama3.2}
+    volumes:
+      - rag-index:/data
+
+  # Optional: local LLM for the `use_llm=true` mode. Start with:
+  #   docker compose --profile llm up --build
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["llm"]
+    volumes:
+      - ollama-models:/root/.ollama
+    ports:
+      - "11434:11434"
+
+volumes:
+  rag-index:
+  ollama-models:
